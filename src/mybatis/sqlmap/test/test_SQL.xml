@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="testSqlmap">
+
+<!-- 예제 
+    Beans 클래스의 객체이름(id)과 클래스이름(type)을 명시한다.
+    <resultMap id="departmentMap" type="study.java.model.Department">
+        Beans의 멤버변수(property)이름과 대상 테이블의 컬럼(column)을 연결한다.
+        <result property="deptno"   column="deptno" />
+        <result property="dname"    column="dname" />
+        <result property="loc"      column="loc" />
+    </resultMap>
+
+	단일행 조회를 위한 기능 정의
+    <select id="selectItem" parameterType="study.java.model.Department" resultMap="departmentMap">
+        SELECT deptno, dname, loc FROM department WHERE deptno=#{deptno};
+    </select>
+
+	데이터 수 조회를 위한 기능 정의
+    <select id="selectCount" parameterType="study.java.model.Department" resultType="int">
+        SELECT COUNT(*) FROM department;
+    </select>
+
+	데이터 저장을 위한 기능 정의
+    <insert id="insertItem" parameterType="study.java.model.Department" useGeneratedKeys="true" keyProperty="deptno">
+        INSERT INTO department (
+            dname, loc
+        ) VALUES (
+            #{dname}, #{loc}
+        );
+    </insert>
+
+	데이터 삭제를 위한 기능 정의
+    <delete id="deleteItem" parameterType="study.java.model.Department">
+        DELETE FROM department WHERE deptno=#{deptno};
+    </delete>
+
+	데이터 갱신을 위한 기능 정의
+    <update id="updateItem" parameterType="study.java.model.Department">
+        UPDATE department SET
+            dname=#{dname},
+            loc=#{loc}
+        WHERE deptno=#{deptno};
+    </update>
+    
+    '<' 문자열 처리  >>  <![CDATA[<]]>
+ -->
+ 
+ 
+ 
+ 
+ 
+	<!-- sqlite 문법 테이블 목록 조회(이름) -->
+    <select id="testSqlmap.selectTables" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        /* mypageUserLrnDAO.selectAlctcrManageInfo */
+        SELECT NAME 
+        FROM SQLITE_MASTER 
+        WHERE TYPE IN ('TABLE', 'VIEW') 
+        AND NAME NOT LIKE 'SQLITE_%' 
+        
+        UNION ALL
+         
+        SELECT NAME 
+        FROM SQLITE_TEMP_MASTER 
+        WHERE TYPE IN ('TABLE', 'VIEW') 
+        ORDER BY 1
+    </select>
+    
+	<!-- sqlite 문법 테이블 목록 조회 (상세) -->
+    <select id="testSqlmap.selectTableListInfos" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        /* mypageUserLrnDAO.selectAlctcrManageInfo */
+        SELECT * 
+        FROM SQLITE_MASTER 
+        WHERE TYPE='TABLE'
+    </select>
+    
+    <!-- sqlite 문법 테이블 생성 -->
+    <insert id="testSqlmap.createTable">
+        /* mypageUserLrnDAO.selectAlctcrManageInfo */
+        create table test(
+        	a varchar(20)
+        )
+    </insert>
+    
+    
+
+</mapper>

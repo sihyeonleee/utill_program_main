@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="create">
+	
+	
+	
+	<!-- ENABLES :: FOREIGN KEY -->
+    <update id="create.updateEnableFrgnks">
+    	/* create.updateEnableFrgnks */
+	    pragma foreign_keys = 1
+    </update>
+	
+	
+	
+	
+	
+    <!-- COMMON SQL -->
+    <!-- #################################### -->
+    <!-- 업무관리자 테이블 -->
+	<insert id="create.COMMONCODE">
+		/* create.COMMONCODE */
+		create table COMMONCODE(
+			  CODE_SN 			INTEGER	NOT NULL PRIMARY KEY AUTOINCREMENT	<!-- 코드 순번 -->
+			, CODE_NM 			TEXT 	NOT NULL							<!-- 코드 이름 -->
+			, CODE_CN 			TEXT 	NOT NULL							<!-- 코드 설명 -->
+			, CODE_NO			INTEGER NOT NULL							<!-- 코드 번호 -->
+			, FRST_REGIST_PNTTM DATE 	NOT NULL							<!-- 생성 일자 -->
+			, LAST_UPDT_PNTTM 	DATE 	NOT NULL							<!-- 업뎃 일자 -->
+		)
+	</insert>
+	
+	<insert id="create.COMMONCODE_DATA_TASK">
+		INSERT INTO COMMONCODE (
+			  CODE_NM 			
+			, CODE_CN 			
+			, CODE_NO			
+			, FRST_REGIST_PNTTM 
+			, LAST_UPDT_PNTTM 	
+		)VALUES(
+			  '필터' 			
+			, '이름' 			
+			, '001'			
+			, DATETIME('NOW', 'LOCALTIME')
+			, DATETIME('NOW', 'LOCALTIME')
+		), (
+			  '필터' 			
+			, '내용' 			
+			, '002'			
+			, DATETIME('NOW', 'LOCALTIME') 
+			, DATETIME('NOW', 'LOCALTIME')
+		), (
+			  '필터' 			
+			, '일자' 			
+			, '003'			
+			, DATETIME('NOW', 'LOCALTIME') 
+			, DATETIME('NOW', 'LOCALTIME')
+		)
+		
+		
+		<!-- 색상 -->
+		,(
+			  '색상' 			
+			, 'WHITE' 			
+			, '001'			
+			, DATETIME('NOW', 'LOCALTIME') 
+			, DATETIME('NOW', 'LOCALTIME')
+		), (
+			  '색상' 			
+			, 'RED' 			
+			, '002'			
+			, DATETIME('NOW', 'LOCALTIME') 
+			, DATETIME('NOW', 'LOCALTIME')
+		), (
+			  '색상' 			
+			, 'BLUE' 			
+			, '003'			
+			, DATETIME('NOW', 'LOCALTIME') 
+			, DATETIME('NOW', 'LOCALTIME')
+		), (
+			  '색상' 			
+			, 'MAGENTA' 			
+			, '004'			
+			, DATETIME('NOW', 'LOCALTIME') 
+			, DATETIME('NOW', 'LOCALTIME')
+		), (
+			  '색상' 			
+			, 'ORANGE' 			
+			, '005'			
+			, DATETIME('NOW', 'LOCALTIME') 
+			, DATETIME('NOW', 'LOCALTIME')
+		), (
+			  '색상' 			
+			, 'GREEN' 			
+			, '006'			
+			, DATETIME('NOW', 'LOCALTIME') 
+			, DATETIME('NOW', 'LOCALTIME')
+		), (
+			  '색상' 			
+			, 'BLACK' 			
+			, '007'			
+			, DATETIME('NOW', 'LOCALTIME') 
+			, DATETIME('NOW', 'LOCALTIME')
+		)
+		
+		
+		<!-- 정렬 -->
+		, (
+			  '정렬' 			
+			, '제목순' 			
+			, '001'			
+			, DATETIME('NOW', 'LOCALTIME') 
+			, DATETIME('NOW', 'LOCALTIME')
+		), (
+			  '정렬' 			
+			, '최신순' 			
+			, '002'			
+			, DATETIME('NOW', 'LOCALTIME') 
+			, DATETIME('NOW', 'LOCALTIME')
+		)
+	</insert>
+    <!-- #################################### -->
+    
+    
+    
+    
+    
+    
+	
+	 <!-- SERVICE :: CREATE TABLES -->
+    <!-- #################################### -->    
+    
+    <!-- 업무관리자 테이블 :: 도메인, 태그, 업무, 파일 -->
+	<insert id="create.TASK_DOMAIN">
+		/* create.TASK_DOMAIN */
+		create table TASK_DOMAIN(
+			  DOMAIN_SN 		INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT	<!-- 도메인 순번 -->
+			, DOMAIN_NM 		TEXT 	NOT NULL							<!-- 도메인 이름 -->
+			, FRST_REGIST_PNTTM DATE 	NOT NULL							<!-- 생성 일자 -->
+			, LAST_UPDT_PNTTM 	DATE 	NOT NULL							<!-- 업뎃 일자 -->
+		)
+	</insert>
+	<insert id="create.TASK_TAG">
+		/* create.TASK_TAG */
+		create table TASK_TAG(
+			  TAG_SN 			INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT	<!-- 태그 순번 -->
+			, TAG_SJ 			TEXT 	NOT NULL							<!-- 태그 제목 -->
+			, TAG_CN 			TEXT                             			<!-- 태그 내용 -->
+			, TAG_COLOR 		TEXT 	NOT NULL							<!-- 태그 색상 -->
+			, TAG_DATE 			DATE 	NOT NULL							<!-- 태그 일자 -->
+			, TAG_ALAM_AT 		INTEGER NOT NULL							<!-- 태그 알람여부 -->
+			, TAG_NOTI_AT 		INTEGER NOT NULL							<!-- 태그 알림여부 -->
+			, TAG_TYPE_CODE 	INTEGER NOT NULL							<!-- 태그 타입코드 -->
+			, FRST_REGIST_PNTTM DATE 	NOT NULL							<!-- 생성 일자 -->
+			, LAST_UPDT_PNTTM 	DATE 	NOT NULL							<!-- 업뎃 일자 -->
+			, DOMAIN_SN			INTEGER	NOT NULL							<!-- 도메인 순번 -->
+			, CONSTRAINT TAG_DOMAIN_FK FOREIGN KEY(DOMAIN_SN) REFERENCES TASK_DOMAIN(DOMAIN_SN)
+		)
+	</insert>
+	<insert id="create.TASK_SCHD">
+		/* create.TASK_SCHD */
+		create table TASK_SCHD(
+			  TASK_SN			INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT	<!-- 업무 순번 -->
+			, TASK_SJ			TEXT	NOT NULL							<!-- 업무 제목 -->
+			, TASK_CN			TEXT										<!-- 업무 내용 -->
+			, TASK_START		DATE 	NOT NULL							<!-- 업무 시작 -->
+			, TASK_END			DATE 	NOT NULL							<!-- 업무 종료 -->
+			, TASK_ALAM_AT		INTEGER NOT NULL							<!-- 업무 알람여부 -->
+			, TASK_NOTI_AT		INTEGER NOT NULL							<!-- 업무 알림여부 -->
+			, TASK_SUCCESS_AT	INTEGER NOT NULL							<!-- 업무 완료여부 -->
+			, TASK_TYPE_CODE	INTEGER NOT NULL							<!-- 업무 타입코드 -->
+			, FRST_REGIST_PNTTM DATE 	NOT NULL							<!-- 생성 일자 -->
+			, LAST_UPDT_PNTTM 	DATE 	NOT NULL							<!-- 업뎃 일자 -->
+			, TAG_SN 			INTEGER NOT NULL							<!-- 태그 순번 -->
+			, CONSTRAINT SCHD_TAG_FK FOREIGN KEY(TAG_SN) REFERENCES TASK_TAG(TAG_SN)
+		)
+	</insert>
+	<insert id="create.TASK_FILE">
+		/* create.TASK_FILE */
+		create table TASK_FILE(
+			  FILE_SN			INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT	<!-- 파일 순번 -->
+			, FILE_NM			TEXT	NOT NULL    						<!-- 파일 이름 -->
+			, FILE_PATH			TEXT	NOT NULL							<!-- 파일 경로 -->
+			, FILE_ORGN_NAME	TEXT 	NOT NULL							<!-- 원본 파일 이름 -->
+			, FILE_ORGN_PATH	TEXT 	NOT NULL							<!-- 원본 파일 경로 -->
+			, FILE_TYPE_CODE	INTEGER NOT NULL							<!-- 파일 타입코드 -->
+			, FRST_REGIST_PNTTM DATE 	NOT NULL							<!-- 생성 일자 -->
+			, LAST_UPDT_PNTTM 	DATE 	NOT NULL							<!-- 업뎃 일자 -->
+			, TASK_SN			INTEGER NOT NULL							<!-- 업무 순번 -->
+			, TAG_SN 			INTEGER NOT NULL							<!-- 태그 순번 -->
+			, CONSTRAINT FILE_TASK_FK FOREIGN KEY(TASK_SN) REFERENCES TASK_SCHD(TASK_SN)
+			, CONSTRAINT FILE_TAG_FK FOREIGN KEY(TAG_SN) REFERENCES TASK_TAG(TAG_SN)
+		)
+	</insert>
+    <!-- #################################### --> 
+	
+	
+	<insert id="create.COPY_MANAGE">
+		/* create.COPY_MANAGE */
+		create table COPY_MANAGE(
+			  COPY_MANAGE_SN	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT	<!-- 파일 순번 -->
+			, COPY_MANAGE_TITLE	TEXT	NOT NULL    						<!-- 파일 이름 -->
+			, FRST_REGIST_PNTTM DATE 	NOT NULL							<!-- 생성 일자 -->
+			, LAST_UPDT_PNTTM 	DATE 	NOT NULL							<!-- 업뎃 일자 -->
+		)
+	</insert>
+	
+	<insert id="create.COPY_HIST">
+		/* create.COPY_HIST */
+		create table COPY_HIST(
+			  COPY_HIST_SN		INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT	<!-- 파일 순번 -->
+			, COPY_MANAGE_SN	INTEGER NOT NULL
+			, COPY_FILE_NM		TEXT	NOT NULL    						<!-- 파일 이름 -->
+			, COPY_PARENT_PATH	TEXT	NOT NULL							<!-- 파일 경로 -->
+			, COPY_IS_DIRECTORY	INTEGER NOT NULL							<!-- 파일 타입코드 -->
+			, FRST_REGIST_PNTTM DATE 	NOT NULL							<!-- 생성 일자 -->
+			, LAST_UPDT_PNTTM 	DATE 	NOT NULL							<!-- 업뎃 일자 -->
+			, CONSTRAINT HIST_MANAGE_FK FOREIGN KEY(COPY_MANAGE_SN) REFERENCES COPY_MANAGE(COPY_MANAGE_SN)
+		)
+	</insert>
+	
+	
+    <!-- #################################### --> 
+	
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <settings>
+		<setting name="logImpl" value="LOG4J"/>
+	</settings>
+	
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}" />
+				<property name="url" value="${url}" />
+				<property name="username" value="${username}" />
+				<property name="password" value="${password}" />
+			</dataSource>
+		</environment>
+	</environments>
+    
+	<mappers>
+		<!-- <mapper resource="mybatis/sqlmap/test/test_SQL.xml" /> -->
+	
+		<mapper resource="mybatis/sqlmap/common/Common_SQL.xml" />
+		<mapper resource="mybatis/sqlmap/common/Create_SQL.xml" />
+	
+		
+		<mapper resource="mybatis/sqlmap/task/Task_SQL.xml" />
+		
+		<mapper resource="mybatis/sqlmap/learning/Learning_SQL.xml" />
+		
+		<mapper resource="mybatis/sqlmap/avgservice/AVGService_SQL.xml" />
+		
+		<mapper resource="mybatis/sqlmap/cmpln/CmplnService_SQL.xml" />
+		
+	</mappers>
+    
+</configuration>
