@@ -73,9 +73,6 @@ public class HotKeyService extends Service{
 
 	}
 	public void read() {
-		
-		
-		
 		TextFileReader reader = new TextFileReader(Path.ROOTPATH+"prop", Path.PATH_FILE_HOTKEY, "lsh");
 		Map<String, Map<String, String>> readeResult = reader.getKeyValueTypeDataToMap(reader.reade(true, base), "\\[HOTKEY\\]", "title");
 		keyList = new ArrayList<>(readeResult.values());
@@ -94,7 +91,6 @@ public class HotKeyService extends Service{
 		panels.get(0).revalidate();
 		panels.get(0).repaint();
 		
-		panels.get(0).requestFocusInWindow();
 	}
 	
 	public ActionListener listener(Map<String, String> k) {
@@ -117,6 +113,9 @@ public class HotKeyService extends Service{
 					}
 					
 				}
+				
+
+				panels.get(0).requestFocusInWindow();
 			}
 		};
 	}
