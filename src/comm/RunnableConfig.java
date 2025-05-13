@@ -24,9 +24,11 @@ public class RunnableConfig {
 		ArrayList<String> events = new ArrayList<>();
 		
 		names.add("파일관리"				 ); events.add("manager.FileManager"  );
+		names.add("학습데이터"				 ); events.add("manager.AiLearning"  );
+		names.add("이미지매크로"				 ); events.add("manager.ImgMacro"  );
 //		names.add("파일복사"				 ); events.add("write.FilePathCopy"   );
 		names.add("---------------------"); events.add("---------------------");
-		names.add("계산"					 ); events.add("tmp.CALC"             );
+//		names.add("계산"					 ); events.add("tmp.CALC"             );
 		names.add("Log"					 ); events.add("config.Logger"        );
 		names.add("HotKey"				 ); events.add("config.HotKey"		  );
 		names.add("Workspace"			 ); events.add("config.Workspace"     );
@@ -49,9 +51,10 @@ public class RunnableConfig {
 		ArrayList<String> events = new ArrayList<>();
 		
 		names.add("파일관리"				 ); events.add("manager.FileManager"  );
+		names.add("학습데이터"				 ); events.add("manager.AiLearning"  );
 //		names.add("파일복사"				 ); events.add("write.FilePathCopy"   );
 		names.add("---------------------"); events.add("---------------------");
-		names.add("계산"					 ); events.add("tmp.CALC"             );
+//		names.add("계산"					 ); events.add("tmp.CALC"             );
 		names.add("Log"					 ); events.add("config.Logger"        );
 		names.add("HotKey"				 ); events.add("config.HotKey"		  );
 		names.add("Workspace"			 ); events.add("config.Workspace"     );

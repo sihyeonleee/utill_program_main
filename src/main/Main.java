@@ -37,9 +37,9 @@ public class Main {
 	/**
 	 * #### Runnable Config ####
 	 * -DServer.mode=DEV
-	 * -Dfile.admin=TRUE
+	 * -DServer.admin=TRUE
 	 * -DServer.network=FALSE
-	 * -Dfile.encoding=MS949
+	 * -Dfile.encoding=UTF-8
 	 * 
 	 * Command Line Run : java -DServer.mode=DEV -jar .\\utillService_1_1_0.jar
 	 * 
