@@ -26,7 +26,9 @@ public class RunnableConfig {
 		names.add("파일관리"				 ); events.add("manager.FileManager"  );
 		names.add("학습데이터"				 ); events.add("manager.AiLearning"  );
 		names.add("이미지매크로"				 ); events.add("manager.ImgMacro"  );
-//		names.add("파일복사"				 ); events.add("write.FilePathCopy"   );
+		names.add("화면잠금방지"				 ); events.add("manager.SystemMacro"  );
+//		names.add("텍스트"				 ); events.add("manager.TextManager"  );
+		names.add("파일복사"				 ); events.add("write.FilePathCopy"   );
 		names.add("---------------------"); events.add("---------------------");
 //		names.add("계산"					 ); events.add("tmp.CALC"             );
 		names.add("Log"					 ); events.add("config.Logger"        );
@@ -52,7 +54,10 @@ public class RunnableConfig {
 		
 		names.add("파일관리"				 ); events.add("manager.FileManager"  );
 		names.add("학습데이터"				 ); events.add("manager.AiLearning"  );
-//		names.add("파일복사"				 ); events.add("write.FilePathCopy"   );
+		names.add("이미지매크로"				 ); events.add("manager.ImgMacro"  );
+		names.add("화면잠금방지"				 ); events.add("manager.SystemMacro"  );
+//		names.add("텍스트"				 ); events.add("manager.TextManager"  );
+		names.add("파일복사"				 ); events.add("write.FilePathCopy"   );
 		names.add("---------------------"); events.add("---------------------");
 //		names.add("계산"					 ); events.add("tmp.CALC"             );
 		names.add("Log"					 ); events.add("config.Logger"        );

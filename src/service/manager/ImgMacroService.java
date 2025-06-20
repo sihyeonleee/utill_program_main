@@ -1,9 +1,16 @@
 package service.manager;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
+import java.awt.Rectangle;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import org.sikuli.script.Match;
 import org.sikuli.script.Screen;
@@ -48,15 +55,17 @@ public class ImgMacroService extends Service {
 		btn2.setGridWeight(1, 1);
 		btn2.setArrangeType(GridBagConstraints.BOTH);
 		componentObjs.add(btn2);
-
-		CompObj result = new CompObj();
-		result.setMsg("파일선택");
-		result.setEnabled(false);
-		result.setType(CompObj.TYPE_OUTPUT);
-		result.setGridSize(1, 1);
-		result.setGridWeight(30, 30);
-		result.setGridPosition(0, 1);
-		componentObjs.add(result);
+		
+		// 컴포넌트 설정
+		CompObj btn3 = new CompObj();
+		btn3.setName("버튼3");
+		btn3.setEvtName("button3");
+		btn3.setType(CompObj.TYPE_BUTTON);
+		btn3.setEventType(CompObj.EVENT_ACTION);
+		btn3.setGridPosition(0, 2);
+		btn3.setGridWeight(1, 1);
+		btn3.setArrangeType(GridBagConstraints.BOTH);
+		componentObjs.add(btn3);
 
 	}
 
@@ -76,6 +85,8 @@ public class ImgMacroService extends Service {
 		String threadName = "ImgMacroService";
 		runThread(threadName, false);
 
+		ImageSearch search = new ImageSearch();
+
 		if (type.equals("click") && "button1".equals(obj.getEvtName())) {
 			FileChooser ch = new FileChooser();
 			File[] files = ch.doSelect();
@@ -84,38 +95,77 @@ public class ImgMacroService extends Service {
 				file = files[0];
 			}
 		}else if (type.equals("click") && "button2".equals(obj.getEvtName())) {
-			ImageSearch search = new ImageSearch();
 			
 			CompletableFuture
-		    .supplyAsync(() -> search.findMatchesBlocking(file, 0.6f))
+		    .supplyAsync(() -> search.findMatchesSelectBlocking(file, 0.6f))
 		    .thenApplyAsync(matches1 -> {
-		        matches1.forEach(m -> {
-		            try {
-		                new Screen().mouseMove(m);
-		                Thread.sleep(300);
-		            } catch (Exception ignored) {}
-		        });
+		    	
+		    	List<Rectangle> regions = search.groupMatches(matches1);
+		        
+		        JFrame frame = new JFrame("Match Visualizer");
+		        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		        frame.setUndecorated(true); // 창 테두리 제거
+		        frame.setAlwaysOnTop(true);
+		        frame.setBackground(new Color(0, 0, 0, 128)); // 반투명 검정 배경
+		        frame.setExtendedState(JFrame.MAXIMIZED_BOTH); // 전체 화면
+
+		        JPanel panel = new JPanel() {
+		            protected void paintComponent(Graphics g) {
+		                super.paintComponent(g);
+		                g.setColor(Color.RED);
+		                g.setFont(new Font("Arial", Font.BOLD, 14));
+
+		                for(Rectangle r : regions) {
+		                	g.drawRect(r.x, r.y, r.width, r.height);
+		                    g.drawString("test", r.x + 3, r.y + 15);
+		                }
+		                
+//		                for (Match m : matches1) {
+//		                    Rectangle rect = m.getRect();
+//		                    g.drawRect(rect.x, rect.y, rect.width, rect.height);
+//		                    g.drawString("test", rect.x + 3, rect.y + 15);
+//		                }
+		            }
+		        };
+
+		        panel.setOpaque(false);
+		        frame.add(panel);
+		        frame.setVisible(true);
 		        return null;
-		    })
-		    .thenApplyAsync(none -> {
-		        List<Match> matches2 = search.findMatchesBlocking(file, 0.6f);
-		        matches2.forEach(m -> {
-		            try {
-		                new Screen().click(m);
-		                Thread.sleep(300);
-		            } catch (Exception ignored) {}
-		        });
-		        return null;
-		    })
-		    .thenRunAsync(() -> {
-		        List<Match> matches3 = search.findMatchesBlocking(file, 0.6f);
-		        matches3.forEach(m -> {
-		            try {
-		                m.highlight(1.0);
-		                Thread.sleep(300);
-		            } catch (Exception ignored) {}
-		        });
 		    });
+			
+			
+			
+//		    .thenApplyAsync(none -> {
+//		        List<Match> matches2 = search.findMatchesSelectBlocking(file, 0.6f);
+//		        matches1.forEach(m -> {
+//		            try {
+//		                new Screen().mouseMove(m);
+//		                Thread.sleep(300);
+//		            } catch (Exception ignored) {}
+//		        });
+//		        matches2.forEach(m -> {
+//		            try {
+//		                new Screen().click(m);
+//		                Thread.sleep(300);
+//		            } catch (Exception ignored) {}
+//		        });
+//		        return null;
+//		    })
+//		    .thenRunAsync(() -> {
+//		        List<Match> matches3 = search.findMatchesSelectBlocking(file, 0.6f);
+//		        matches3.forEach(m -> {
+//		            try {
+//		                m.highlight(1.0);
+//		                Thread.sleep(300);
+//		            } catch (Exception ignored) {}
+//		        });
+//		    });
+			
+			
+			
+		}else if (type.equals("click") && "button3".equals(obj.getEvtName())) {
+			search.tesseract(file);
 		}
 
 	}

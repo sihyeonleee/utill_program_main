@@ -172,7 +172,7 @@ public class TextManagerService extends Service{
 			}
 		}
 		
-		// CTRL
+		// CTRL + number key pad
 		if((e.getModifiers() & 2) != 0){
 			
 			int numMask = 0;

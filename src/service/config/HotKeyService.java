@@ -5,6 +5,8 @@ import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -98,7 +100,44 @@ public class HotKeyService extends Service{
 		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-	
+				
+				if(!k.containsKey("trayIcon") || "".equals(k.get("trayIcon"))) {
+					List<String> selects = new ArrayList<>();
+					
+					try {
+			            // PowerShell 명령어 정의
+						String command = "chcp 65001 >nul && powershell -command \"gps | where { $_.MainWindowTitle } | foreach { $_.MainWindowTitle }\"";
+
+			            // 프로세스 실행
+			            ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", command);
+			            builder.redirectErrorStream(true);
+			            Process process = builder.start();
+
+			            // 결과 출력
+			            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"))) {
+			                String line;
+			                while ((line = reader.readLine()) != null) {
+			                    selects.add(line);
+			                }
+			            }
+
+			            process.waitFor();
+
+			        } catch (Exception err) {
+			            err.printStackTrace();
+			        }
+					
+					String select = (String) Main.selectPop("아이콘 선택", "구분", "", selects.toArray(new String[selects.size()]));
+
+					if(select != null && !"".equals(select)){
+						k.put("trayIcon", select);
+					}else {
+						Main.alertPop("입력을 확인해주세요.");
+						return;
+					}
+				}
+				
+				
 				Map<String, String> result = Main.confirmPop( "단축키설정", new String[] {"trayIcon", "installPath"}, k);
 				
 				if("confirm".equals(result.get("result"))){
@@ -112,11 +151,12 @@ public class HotKeyService extends Service{
 						k.put("installPath", installPath);
 						write();
 					}
-					
 				}
+					
 				
-
+				
 				panels.get(0).requestFocusInWindow();
+	
 			}
 		};
 	}
