@@ -25,7 +25,7 @@ public class RunnableConfig {
 		
 		names.add("파일관리"				 ); events.add("manager.FileManager"  );
 		names.add("학습데이터"				 ); events.add("manager.AiLearning"  );
-		names.add("이미지매크로"				 ); events.add("manager.ImgMacro"  );
+//		names.add("이미지매크로"				 ); events.add("manager.ImgMacro"  ); // sikulixide-2.0.5, opencv 파일 대용량문제로 git 에 안올라감 추후...
 		names.add("화면잠금방지"				 ); events.add("manager.SystemMacro"  );
 //		names.add("텍스트"				 ); events.add("manager.TextManager"  );
 		names.add("파일복사"				 ); events.add("write.FilePathCopy"   );
@@ -54,7 +54,7 @@ public class RunnableConfig {
 		
 		names.add("파일관리"				 ); events.add("manager.FileManager"  );
 		names.add("학습데이터"				 ); events.add("manager.AiLearning"  );
-		names.add("이미지매크로"				 ); events.add("manager.ImgMacro"  );
+//		names.add("이미지매크로"				 ); events.add("manager.ImgMacro"  ); // sikulixide-2.0.5, opencv 파일 대용량문제로 git 에 안올라감 추후...
 		names.add("화면잠금방지"				 ); events.add("manager.SystemMacro"  );
 //		names.add("텍스트"				 ); events.add("manager.TextManager"  );
 		names.add("파일복사"				 ); events.add("write.FilePathCopy"   );
