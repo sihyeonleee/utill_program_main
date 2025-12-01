@@ -1,5 +1,6 @@
 package comm.fileio;
 
+import java.awt.Desktop;
 import java.awt.TrayIcon.MessageType;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -263,31 +264,60 @@ public class FileChooser extends FileService{
 		
 	}
 	
-	public static Map<String, String> openOrginFolder(String fullPath){
-		
-		Map<String, String> result = null;
-		
-		fullPath = fullPath.replace(File.separator, File.separator+File.separator);
-		String cmd = "wmic path win32_shortcutfile where \"name=\'" + fullPath + "\'\" get target /value";
-		
-		try{
-			
-			Process proc = Runtime.getRuntime().exec(cmd);
-			
-			result = printStream(proc);
-			
-			String log = result.get("log");
-			
-			log = log.substring(log.indexOf("=")+1);
-			log = log.substring(0, log.lastIndexOf(File.separator));
-			Process openProc = Runtime.getRuntime().exec("powershell start \'" + log + "\'");
-			result.put("err", printStream(openProc).get("err"));
-		} catch (IOException | InterruptedException err) {
-			err.printStackTrace();
-		}
-		
-		return result;
-	}
+
+public static Map<String, String> openOrginFolder(String fullPath) {
+    Map<String, String> result = new HashMap<>();
+    result.put("log", "");
+    result.put("err", "");
+
+    try {
+        // PowerShell에서 사용하기 위해 ' 를 이스케이프 처리
+        String psPath = fullPath.replace("'", "''");
+
+        String script =
+                "$ws = New-Object -ComObject WScript.Shell; " +
+                "$sc = $ws.CreateShortcut('" + psPath + "'); " +
+                "Write-Output $sc.TargetPath;";
+
+        // wmic 대신 PowerShell 실행
+        Process proc = new ProcessBuilder("powershell", "-NoProfile", "-Command", script)
+                .redirectErrorStream(true)
+                .start();
+
+        // 기존 printStream을 그대로 활용한다고 가정 (stdout → log, stderr → err)
+        Map<String, String> read = printStream(proc);
+        String targetPath = read.get("log") != null ? read.get("log").trim() : "";
+
+        if (targetPath.isEmpty()) {
+            result.put("err", "원본 경로를 찾을 수 없습니다. (TargetPath 공백)");
+            return result;
+        }
+
+        // 타겟이 파일이면 상위 폴더, 폴더면 그대로
+        File target = new File(targetPath);
+        File folder = target.isDirectory() ? target : target.getParentFile();
+
+        if (folder == null || !folder.exists()) {
+            result.put("err", "원본 폴더가 존재하지 않습니다: " + targetPath);
+            return result;
+        }
+
+        // 탐색기(기본 파일 탐색기)로 폴더 열기
+        Desktop.getDesktop().open(folder);
+
+        result.put("log", folder.getAbsolutePath());
+        return result;
+
+    } catch (IOException e) {
+        e.printStackTrace();
+        result.put("err", "PowerShell 실행 실패: " + e.getMessage());
+        return result;
+    } catch (Exception e) {
+        e.printStackTrace();
+        result.put("err", "원본 폴더 열기 중 오류: " + e.getMessage());
+        return result;
+    }
+}
 	
 	public static void openFolder(String path){
 		try {

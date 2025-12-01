@@ -530,11 +530,15 @@ public class FileManagerService extends Service implements FileObjEventListener{
 				delFiles(objects);
 				break;
 			case FileObject.OPEN_FOLDER :
-				for(FileObject obj : objects) {
-					Map<String, String> r = FileChooser.openOrginFolder(obj.getFilePath());
-					if(!r.get("err").trim().equals("")) {
-						Main.alertPop(obj.getFileName() + " 파일의 경로를 찾을수 없습니다.");
+				try {
+					for(FileObject obj : objects) {
+						Map<String, String> r = FileChooser.openOrginFolder(obj.getFilePath());
+						if(!r.get("err").trim().equals("")) {
+							Main.alertPop(obj.getFileName() + " 파일의 경로를 찾을수 없습니다.");
+						}
 					}
+				}catch(Exception e) {
+					e.printStackTrace();
 				}
 				break;
 			case FileObject.FILE_INFO :
@@ -872,12 +876,33 @@ public class FileManagerService extends Service implements FileObjEventListener{
 	
 	public void addFiles(String domainName, Object...objects){
 		
+
+	    if (objects == null || objects.length == 0) return;
+
+	    File[] files = null;
+
+	    // objects[0] 이 File[]
+	    if (objects.length == 1 && objects[0] instanceof File[]) {
+	        files = (File[]) objects[0];
+	    }
+	    // varargs 로 File 이 여러 개 들어온 경우: addFiles(domain, file1, file2, ...)
+	    else if (objects[0] instanceof File) {
+	        files = Arrays.copyOf(objects, objects.length, File[].class);
+	    }
+	    // List<File> 인 경우
+	    else if (objects[0] instanceof java.util.List) {
+	        @SuppressWarnings("unchecked")
+	        List<File> list = (List<File>) objects[0];
+	        files = list.toArray(new File[0]);
+	    }
+
+	    if (files == null) return;
+	    
 		// 추가할 위치 기본으로 묻기
 		domainName = showProjectPicker();
 		
 		if(domainName == null || "".equals(domainName)) return;
 		
-		File[] files = (File[]) objects;
 		List<String> fileNames = new ArrayList<>();
 		String lnkPath = ROOTPATH + domainName;
         
