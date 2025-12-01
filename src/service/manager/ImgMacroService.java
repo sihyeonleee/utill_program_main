@@ -1,4 +1,7 @@
-//package service.manager;
+package service.manager;
+
+import service.Service;
+
 //
 //import java.awt.Color;
 //import java.awt.Font;
@@ -22,7 +25,7 @@
 //import gui.obj.FrameObj;
 //import service.Service;
 //
-//public class ImgMacroService extends Service {
+public class ImgMacroService extends Service {
 //
 //	public ImgMacroService() {
 //
@@ -179,4 +182,4 @@
 //			}
 //		};
 //	}
-//}
+}

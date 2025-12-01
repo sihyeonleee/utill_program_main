@@ -1,4 +1,4 @@
-//package comm;
+package comm;
 //
 //import java.awt.Rectangle;
 //import java.awt.image.BufferedImage;
@@ -24,7 +24,7 @@
 //import net.sourceforge.tess4j.Tesseract;
 //import net.sourceforge.tess4j.TesseractException;
 //
-//public class ImageSearch {
+public class ImageSearch {
 //	
 //	
 //	public List<Match> findMatchesScreenBlocking(File file, float similarity) {
@@ -195,4 +195,4 @@
 //		InputStream in = new ByteArrayInputStream(byteArray);
 //		return ImageIO.read(in);
 //	}
-//}
+}
