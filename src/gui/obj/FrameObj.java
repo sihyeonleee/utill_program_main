@@ -142,14 +142,18 @@ public class FrameObj extends JFrame{
 	
 	public void append(Component component){
 		container.add(component);
+		container.repaint();
 	}
 	
 	public void append(Component component, int arrangeType){
 		container.add(component, arrangeType);
+		container.repaint();
 	}
 	
 	public void append(Component component, GridBagConstraints gbc){
 		container.add(component, gbc);
+		container.revalidate();
+		container.repaint();
 	}
 	
 	public void doShow(){
